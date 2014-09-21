@@ -37,7 +37,7 @@ Next, the training data is preprocessed with Principal Component Analyais (PCA).
 
 ## Form a prediction model
 ```{r}
-modelF1 <- train(training$classe ~.,method = "qda",preprocess = "pca",data = train1)
+modelF1 <- train(training$classe ~.,method = "qda",preProcess = "pca",data = training)
 pred1 <- predict(modelF1,validation)
 confusionMatrix(validation$classe,pred1)
 
