@@ -28,8 +28,8 @@ test1 <- test1[,colselec]
 train1 <- train1[,-2]
 test1 <- test1[,-2]
 inTrain <- createDataPartition(y = train1$classe, p = 0.7,list = FALSE)
-training <- train[inTrain,]
-validation <- train[-inTrain,]
+training <- train1[inTrain,]
+validation <- train1[-inTrain,]
 ```
 70% of train data is in training part and 30% of it to be in validation part. This is to check how the model is fitted well with data.
 
@@ -37,7 +37,7 @@ Next, the training data is preprocessed with Principal Component Analyais (PCA).
 
 ## Form a prediction model
 ```{r}
-modelF1 <- train(training$classe ~.,method = "qda",preprocess = "pca",data = training)
+modelF1 <- train(training$classe ~.,method = "qda",preprocess = "pca",data = train1)
 pred1 <- predict(modelF1,validation)
 confusionMatrix(validation$classe,pred1)
 
