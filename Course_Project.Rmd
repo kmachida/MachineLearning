@@ -1,0 +1,60 @@
+---
+title: "Course Project"
+output: html_document
+---
+# Course Project: Machine Learning
+========================================================
+
+The purpose of this is to build a model to predict and classify classe category of the data based on multiple variable.The data is obtained from the website:"http://groupware.les.inf.puc-rio.br/har". The data is about weight lifting exercise. There are five classes A B C D E to be classified. 
+
+## Load the train and test data
+```{r}
+library(caret)
+
+trainurl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
+train <- read.csv(trainurl)
+testurl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
+test <- read.csv(testurl)
+```
+
+First, the training data is splited to training and validation data. The prediction model is built based on training data, and its accuracy will be checked using validation data. Also removing irrelevant columns like user name and ones that contain na values or empty.
+
+## Clean data and partition
+```{r}
+set.seed(10)
+colselec <- colSums(is.na(train)) == 0
+train1 <- train[, colselec]
+test1 <- test[,colselec]
+colselec <- colSums(train1 == "") == 0
+train1 <- train1[, colselec]
+test1 <- test1[,colselec]
+train1 <- train1[,-2]
+test1 <- test1[,-2]
+inTrain <- createDataPartition(y = train1$classe, p = 0.7,list = FALSE)
+training <- train[inTrain,]
+validation <- train[-inTrain,]
+```
+70% of train data is in training part and 30% of it to be in validation part. This is to check how the model is fitted well with data.
+
+Next, the training data is preprocessed with Principal Component Analyais (PCA). The model are trained using Quadratice Discriminant Analysis (QDA). The model is checked using validation data using confusion Matrix.
+
+## Form a prediction model
+```{r}
+modelF1 <- train(training$classe ~.,method = "qda",preprocess = "pca",data = training)
+pred1 <- predict(modelF1,validation)
+confusionMatrix(validation$classe,pred1)
+
+```
+
+This achived total accuracy of approximately 0.997. The matrix shows that classification of B tends to be predicted as B and C as D.
+Now, the model is applied to test data for classification.
+
+Followings are prediction of classe of test data made by the model.
+
+## Predict test data using the model
+```{r}
+predT <- predict(modelF1,test1)
+predT
+```
+
+
