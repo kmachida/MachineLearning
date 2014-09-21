@@ -10,11 +10,8 @@ The purpose of this is to build a model to predict and classify classe category 
 ## Load the train and test data
 ```{r}
 library(caret)
-
-trainurl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
-train <- read.csv(trainurl)
-testurl <- "https://d396qusza40orc.cloudfront.net/predmachlearn/pml-testing.csv"
-test <- read.csv(testurl)
+train <- read.csv("pml-training.csv")
+test <- read.csv("pml-testing.csv")
 ```
 
 First, the training data is splited to training and validation data. The prediction model is built based on training data, and its accuracy will be checked using validation data. Also removing irrelevant columns like user name and ones that contain na values or empty.
